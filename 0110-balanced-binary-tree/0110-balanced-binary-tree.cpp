@@ -11,34 +11,40 @@
  */
 class Solution {
 private:
-    int height(TreeNode * root){
+    pair<int,bool> solve(TreeNode* root){
         if(root==NULL){
-            return 0;
+            pair<int,bool> p=make_pair(0,true);
+            return p;
         }
-        int left_h=height(root->left);
-        int right_h=height(root->right);
+    pair<int,bool>op1=solve(root->left);
+    pair<int,bool>op2=solve(root->right);
+    bool left_p=op1.second;
+    bool right_p=op2.second;
+    bool diff =abs(op1.first -op2.first)<=1;
+
+pair<int,bool>t;
+t.first=max(op1.first,op2.first)+1;
+    if(left_p && right_p && diff){
         
-        return( max(left_h ,right_h)+1);
+       
+        t.second=true;
+        return(t);
+    }
+
+    else{
+        t.second=false;
+        return t;
+    }
+
+    
+
+
+
     }
 public:
     bool isBalanced(TreeNode* root) {
-       
-       if(root==NULL){
-        return true;
-       }
-
-       bool op1=isBalanced(root->left);
-       bool op2=isBalanced(root->right);
-       bool op3 = abs(height(root->left)-height(root->right)) <=1;
-
-
-       if(op1 && op2 && op3){
-        return 1;
-       }
-       else
-       return 0;
-
-
+        pair<int,bool>ans=solve(root);
+        return ans.second;
         
     }
 };

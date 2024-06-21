@@ -22,13 +22,14 @@ public:
                 }
                 prev->right=current->right;
                 current->right=current->left;
+                current->left=NULL;
             }
             current=current->right;
         }
-        current =root;
-        while(current!=NULL){
-            current->left=NULL;
-            current=current->right;
-        }
+        // current =root;
+        // while(current!=NULL){
+        //     current->left=NULL;
+        //     current=current->right;
+        // }
     }
 };

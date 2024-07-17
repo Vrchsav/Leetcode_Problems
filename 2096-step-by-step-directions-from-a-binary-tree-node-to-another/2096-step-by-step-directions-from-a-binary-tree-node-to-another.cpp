@@ -58,13 +58,29 @@ class Solution {
 public:
     string getDirections(TreeNode* root, int startValue, int destValue) 
     {
-        TreeNode* ance = solve(root,  startValue,  destValue);
+        //TreeNode* ance = solve(root,  startValue,  destValue);
         string str;
-        bool i=path(ance,startValue,str);
+        bool m=path(root,startValue,str);
         string des="";
-        bool h=path(ance,destValue,des);
-        string add=string(str.size(),'U');
-        string ans =add +des;
+        bool h=path(root,destValue,des);
+        int i=0;
+        int j=0;
+        string ans;
+        while(i<str.size()||j<des.size()){
+            if(str[i]!=des[j]){
+                while(i<str.size()){
+                    ans+='U';
+                    i++;
+                }
+                while(j<des.size()){
+                    ans+=des[j];
+                    j++;
+                }
+            }
+            i++;
+            j++;
+        }
+        
         return ans;
         
     }

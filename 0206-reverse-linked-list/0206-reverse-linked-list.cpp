@@ -9,19 +9,23 @@
  * };
  */
 class Solution {
-    private:
-    ListNode* reverse(ListNode* head) {
-        if(head==NULL || head->next==NULL){
-            return head;
-        }
-    ListNode* answer=reverse(head->next);
-    head->next->next=head;
-head->next=NULL;
-return answer;
-    }
 public:
     ListNode* reverseList(ListNode* head) {
-         return ( reverse(head));
-     
+       if( head==NULL || head->next==NULL){
+        return head;
+       }
+        ListNode *prev=NULL;
+        ListNode *curr=head;
+        
+        ListNode *nextt=head->next;
+        while(nextt){
+            curr->next=prev;
+            prev=curr;
+            curr=nextt;
+            nextt=nextt->next;
+        }
+        curr->next = prev;
+        return curr;
+        
     }
 };

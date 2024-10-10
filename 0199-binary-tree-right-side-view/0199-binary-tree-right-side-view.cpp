@@ -10,28 +10,43 @@
  * };
  */
 class Solution {
-private:
-    void solve(TreeNode*root,int level,vector<int>&ans){
-        if(root==NULL){
-            return;
-        }
-        if(level==ans.size()){
-            ans.push_back(root->val);
-        }
-        else{
-            ans[level]=root->val;
-        }
-        solve(root->left,level+1,ans);
-        solve(root->right,level+1,ans);
-
-    }
 public:
     vector<int> rightSideView(TreeNode* root) {
+         if (!root) return {}; 
+        queue<TreeNode*>q;
+        q.push(root);
+        q.push(NULL);
         vector<int>ans;
-        if(root==NULL){
-            return ans;
+        int f;
+        while(!q.empty()){
+            auto temp=q.front();
+            q.pop();
+            
+            if(temp!=NULL){
+                f=temp->val;
+                if(temp->left!=NULL){
+                    q.push(temp->left);
+                }
+                if(temp->right!=NULL){
+                    q.push(temp->right);
+                }
+            }
+            else{
+                if(q.empty()){
+                    break;
+                }
+                ans.push_back(f);
+                q.push(NULL);
+
+
+            }
+            
+            
+
         }
-        solve(root,0,ans);
-        return ans;
+                ans.push_back(f);
+
+                return ans;
+        
     }
 };

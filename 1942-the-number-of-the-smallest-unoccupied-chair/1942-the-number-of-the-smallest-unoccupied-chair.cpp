@@ -1,28 +1,37 @@
 class Solution {
 public:
     int smallestChair(vector<vector<int>>& times, int targetFriend) {
-        vector<int>save=times[targetFriend];
+        int save=times[targetFriend][0];
         sort(times.begin(),times.end());
-        vector<int>arr;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>takenseat;
+        priority_queue<int,vector<int>,greater<int>>emptty;
+        int current_seat=0;
         for(int i=0;i<=times.size();i++){
             int arival=times[i][0];
             int leaving=times[i][1];
-            int chair=-1;
-            for(int j=0;j<arr.size();j++){
-                if( arr[j]<=arival){
-                    arr[j]=leaving;
-                    chair=j;
-                    break;
+            while(!takenseat.empty() && takenseat.top().first<= arival){
+                emptty.push(takenseat.top().second);
+                takenseat.pop();
+            }
+            if(emptty.empty()){
+                takenseat.push({leaving,current_seat});
+                if(arival==save){
+                    return current_seat;
                 }
+                current_seat++;
             }
-            if(chair==-1){
-                chair= arr.size();;
-                arr.push_back(leaving);
+            else{
+                int seat=emptty.top();
+                if(arival==save){
+                    return seat;
+                }
+                emptty.pop();
+                takenseat.push({leaving,seat});
                 
+
             }
-            if(arival==save[0] && leaving==save[1]){
-                        return chair;
-                    }
+            
+
 
         }
         return -1;

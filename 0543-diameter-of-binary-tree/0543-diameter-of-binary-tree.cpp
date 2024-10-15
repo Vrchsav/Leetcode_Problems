@@ -10,25 +10,20 @@
  * };
  */
 class Solution {
-private:
-     int maxDepth(TreeNode* root) {
+    int solve(TreeNode* root,int &maxi){
         if(root==NULL){
             return 0;
         }
-        int left_h=maxDepth(root->left);
-        int right_h=maxDepth(root->right);
-        return (max(left_h,right_h)+1);
-        
+        int left=solve(root->left,maxi);
+        int right=solve(root->right,maxi);
+        maxi=max(maxi,left+right);
+        return 1+max(left,right);
     }
 public:
     int diameterOfBinaryTree(TreeNode* root) {
-        if(root==NULL){
-            return 0;
-        }
-        int op1= diameterOfBinaryTree(root->left);
-        int op2= diameterOfBinaryTree(root->right);
-        int op3=maxDepth(root->left)+maxDepth(root->right);
-        return (max(op1,max(op2,op3)));
-                
+        int ans=-1;
+        int s=solve(root,ans);
+        return ans;
+
     }
 };

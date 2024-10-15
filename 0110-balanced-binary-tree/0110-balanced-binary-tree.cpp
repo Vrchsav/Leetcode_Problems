@@ -10,41 +10,25 @@
  * };
  */
 class Solution {
-private:
-    pair<int,bool> solve(TreeNode* root){
-        if(root==NULL){
-            pair<int,bool> p=make_pair(0,true);
-            return p;
-        }
-    pair<int,bool>op1=solve(root->left);
-    pair<int,bool>op2=solve(root->right);
-    bool left_p=op1.second;
-    bool right_p=op2.second;
-    bool diff =abs(op1.first -op2.first)<=1;
 
-pair<int,bool>t;
-t.first=max(op1.first,op2.first)+1;
-    if(left_p && right_p && diff){
-        
-       
-        t.second=true;
-        return(t);
-    }
-
-    else{
-        t.second=false;
-        return t;
-    }
-
-    
-
-
-
-    }
 public:
-    bool isBalanced(TreeNode* root) {
-        pair<int,bool>ans=solve(root);
-        return ans.second;
+int maxDepth(TreeNode* root,bool &xx) {
+        if(root ==NULL){
+            
+            return 0;
+        }
+        int left=maxDepth(root->left,xx);
+        int right=maxDepth(root->right,xx);
+        int ans=max(left,right)+1;
+        if(abs(left-right)>1){
+          xx =false;
+        }
+        return ans;
         
+    }
+    bool isBalanced(TreeNode* root) {
+        bool x=true;
+        int a=maxDepth(root,x);
+        return x;
     }
 };

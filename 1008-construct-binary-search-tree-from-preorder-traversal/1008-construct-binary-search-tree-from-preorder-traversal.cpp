@@ -10,26 +10,17 @@
  * };
  */
 class Solution {
-private:
-    TreeNode* solve(vector<int> preorder,int min,int max,int &i){
-        if(i>=preorder.size()){
+    TreeNode* build_funct(){
+        if(i>=arr.size() || arr[i]>bound){
             return NULL;
         }
-        if(preorder[i]<min || preorder[i]>max){
-            return NULL;
-        }
-        
-            TreeNode*temp=new TreeNode(preorder[i++]);
-            temp->left=solve(preorder,min,temp->val,i);
-            temp->right=solve(preorder,temp->val,max,i);
-            return temp;
-                    
+        TreeNode* root=new  TreeNode(arr[i]);
+        root->left=build_funct();
     }
 public:
     TreeNode* bstFromPreorder(vector<int>& preorder) {
         int i=0;
-        return(solve(preorder,INT_MIN,INT_MAX,i));
-        
+        return build_funct()
         
     }
 };

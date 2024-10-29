@@ -10,34 +10,33 @@
  * };
  */
 class Solution {
-private:
-    void inorder(TreeNode* root,vector<int>&arr){
+    void preorder(TreeNode*root,vector<int>&arr){
         if(root==NULL){
-            return;
+            return ;
         }
-        inorder(root->left,arr);
+        preorder(root->left,arr);
         arr.push_back(root->val);
-        inorder(root->right,arr);
+        preorder(root->right,arr);
     }
 public:
-
     bool findTarget(TreeNode* root, int k) {
-        vector<int>arr;
-        inorder(root,arr);
+        vector<int>preo;
+        preorder(root,preo);
         int i=0;
-        int j=arr.size()-1;
+        int j=preo.size()-1;
         while(i<j){
-            if(arr[i]+arr[j]==k){
+            int sum=preo[i]+preo[j];
+            if(sum==k){
                 return true;
             }
-            if(arr[i]+arr[j]>k){
-                j--;
+            else if (sum<k){
+                i++;
             }
             else{
-                i++;
+                j--;
             }
         }
         return false;
-
+        
     }
 };

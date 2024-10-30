@@ -1,59 +1,50 @@
 class Solution {
 public:
     int compareVersion(string version1, string version2) {
-        
+        string ver1=""; 
+        string ver2="";
         int i=0;
         int j=0;
-        string num_i="";
-        string num_j="";
-
+        int ans=0;
         while(i<version1.size() && j<version2.size()){
-           while(version1[i]!='.' && i<version1.size()){
-            num_i+=version1[i];
+            while(i<version1.size() && version1[i]!='.'){
+                ver1+=version1[i];
+                i++;
+            }
+            while(j<version2.size() && version2[j]!='.'){
+                ver2+=version2[j];
+                j++;
+            }
+            int num1=stoi(ver1);
+            int num2=stoi(ver2);
+            ver1="";
+            ver2="";
+            if(num1<num2){
+                return -1;
+            }
+            else if (num2<num1){
+                return 1;
+            }
             i++;
-           }
-
-           while(version2[j]!='.' && j<version2.size()){
-            num_j+=version2[j];
             j++;
-           }
-
-           cout<<num_i<<" "<<num_j <<endl;
-           if(stoi(num_i)>stoi(num_j)){
-            return(1);
-           }
-           else if(stoi(num_i)<stoi(num_j)){
-            return(-1);
-           }
-           i++;
-           j++;
-           num_i="";
-           num_j="";
         }
         
-        num_i="";
-        num_j="";
-        
-        while(i<version1.size()){
-            while(version1[i]!='.' && i<version1.size()){
-            num_i+=version1[i];
-            i++;
-           }
-           if(stoi(num_i)!=0){
-            return(1);
-           }
-           i++;
-        }
-        while(j<version2.size()){
-            while(version2[j]!='.' && j<version2.size()){
-            num_j+=version2[j];
-            j++;
-           }
-           if(stoi(num_j)!=0){
-            return(-1);
-           }
-           j++;
-        }
-        return 0;
+        while(i<version1.size() && version1[i]!='.'){
+                ver1=version1[i];
+                if(stoi(ver1)!=0){
+                    return 1;
+                }
+                i++;
+            }
+        while(j<version2.size() && version2[j]!='.'){
+                ver1=version2[j];
+                if(stoi(ver1)!=0){
+                    return -1;
+                }
+                ver2+=version2[j];
+                j++;
+            }
+            return 0;
+
     }
 };

@@ -1,28 +1,26 @@
 class Solution {
        
     bool bsf(vector<vector<int>>& graph,int src,  vector<int> &coloured ){
-        queue<pair<int,int>>q;
+        queue<int>q;
         coloured[src]=1;
-        q.push({src,2});
+        q.push(src);
         while(!q.empty()){
-            pair<int,int>top=q.front();
+            int top=q.front();
             q.pop();
-            for(auto a:graph[top.first]){
-                int currentc=top.second;
+            for(auto a:graph[top]){
+                int currentc=coloured[top];
                 if(coloured[a]==0){
-                    
                     if(currentc==1){
-                    q.push({a,2});
-                    
+                        coloured[a]=2;
                     }
                     else{
-                        q.push({a,1});
+                        coloured[a]=1;
                     }
-                    coloured[a]=currentc;
+                    q.push(a);
 
                 }
                 else{
-                    if(coloured[a]!=currentc){
+                    if(coloured[a]==currentc){
                         return false;
                     }
                 }

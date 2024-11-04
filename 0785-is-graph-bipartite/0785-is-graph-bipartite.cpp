@@ -1,12 +1,9 @@
 class Solution {
-public:
-    bool isBipartite(vector<vector<int>>& graph) {
-        int n=graph.size();
-        vector<int> coloured(n,0);
-
+       
+    bool bsf(vector<vector<int>>& graph,int src,  vector<int> &coloured ){
         queue<pair<int,int>>q;
-        coloured[0]=1;
-        q.push({0,2});
+        coloured[src]=1;
+        q.push({src,2});
         while(!q.empty()){
             pair<int,int>top=q.front();
             q.pop();
@@ -33,6 +30,21 @@ public:
 
         }
         return true;
+        
+    }
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n=graph.size();
+        vector<int> coloured(n,0);
+        for(int i=0;i<n;i++){
+            if(coloured[i]==0){
+                if(!bsf(graph,i,coloured)){
+                    return false;
+                }
+            }
+        }
+        return true;
+
         
     }
 };

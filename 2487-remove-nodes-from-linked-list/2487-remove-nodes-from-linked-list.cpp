@@ -11,6 +11,29 @@
 class Solution {
 public:
     ListNode* removeNodes(ListNode* head) {
-        
+        stack<ListNode*> stt;
+        ListNode* temp = head;
+        ListNode* sar;
+
+        while (temp != NULL) {
+            if (stt.empty()) {
+                stt.push(temp);
+                sar = temp;
+            } else {
+                while (!stt.empty() && stt.top()->val < temp->val) {
+                    stt.pop();
+                }
+                if (stt.empty()) {
+                    stt.push(temp);
+                    sar = temp;
+
+                } else {
+                    stt.top()->next = temp;
+                    stt.push(temp);
+                }
+            }
+            temp=temp->next;
+        }
+        return sar;
     }
 };

@@ -9,9 +9,7 @@ class Solution {
                     dp[i][j]=1;
                 }
                 else{
-                if(Grid[i][j]==1){
-                    continue;
-                }
+                
                 int up=0;
                 if(i>0 && Grid[i-1][j]!=1){
                     up=dp[i-1][j];

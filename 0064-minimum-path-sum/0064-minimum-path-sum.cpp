@@ -1,6 +1,6 @@
 class Solution {
 private:
-    int solve(vector<vector<int>>& grid,int i,int j,  vector<vector<int>>dp){
+    int solve(vector<vector<int>>& grid,int i,int j,  vector<vector<int>>&dp){
         if(i==0 && j==0){
             return grid[0][0];
         }
@@ -13,7 +13,8 @@ private:
         int up = grid[i][j]+ solve(grid,i-1,j,dp);
         int left= grid[i][j]+ solve(grid,i,j-1,dp);
         
-        return dp[i][j]=min(up,left);
+        dp[i][j]=min(up,left);
+        return dp[i][j];
 
     }
 public:

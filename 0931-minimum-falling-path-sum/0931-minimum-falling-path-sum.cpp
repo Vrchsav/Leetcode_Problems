@@ -1,36 +1,47 @@
+
 class Solution {
-    int solve(vector<vector<int>>& matrix,int i,int j,vector<vector<int>>& dp){
-        
-        if (j < 0 || j >= matrix[0].size()) {
-        return 1e9;  
-    }
-    if(i==0){
-            return matrix[i][j];
+    int solve(vector<vector<int>>& matrix, int row, int col) {
+        // Create a DP table initialized with 0
+        vector<vector<int>> dp(row, vector<int>(col, 0));
+
+        // Initialize the first row of dp with the values of the first row of matrix
+        for (int i = 0; i < col; i++) {
+            dp[0][i] = matrix[0][i];
         }
-        if(dp[i][j]!=-1){
-            return dp[i][j];
+
+        // Fill the DP table row by row
+        for (int i = 1; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                int up = matrix[i][j] + dp[i - 1][j];
+                
+                int left = INT_MAX;
+                if (j > 0) {
+                    left = matrix[i][j] + dp[i - 1][j - 1];
+                }
+
+                int right = INT_MAX;
+                if (j < col - 1) {
+                    right = matrix[i][j] + dp[i - 1][j + 1];
+                }
+
+                // Choose the minimum of the three directions
+                dp[i][j] = min(up, min(left, right));
+            }
         }
-        //up
-        int up=matrix[i][j]+solve(matrix,i-1,j,dp);
-        //left diagonal
-        int left=matrix[i][j]+solve(matrix,i-1,j-1,dp);
 
-        //right diagonal
-        int right=matrix[i][j]+solve(matrix,i-1,j+1,dp);
-
-        return dp[i][j]=min(up,min(right,left));
-
-    }
-public:
-    int minFallingPathSum(vector<vector<int>>& matrix) {
-        int row=matrix.size();
-        int col=matrix[0].size();
-        int ans=INT_MAX;
-        for(int i=0;i<col;i++){
-            vector<vector<int>>dp(row,vector<int>(col,-1));
-            ans=min(ans,solve(matrix,row-1,i,dp));
+        // Find the minimum value in the last row of dp
+        int ans = INT_MAX;
+        for (int i = 0; i < col; i++) {
+            ans = min(ans, dp[row - 1][i]);
         }
         return ans;
-        
+    }
+
+public:
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int row = matrix.size();
+        int col = matrix[0].size();
+        // Call solve function to get the result
+        return solve(matrix, row, col);
     }
 };

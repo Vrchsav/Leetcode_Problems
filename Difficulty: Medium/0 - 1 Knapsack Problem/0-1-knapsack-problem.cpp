@@ -5,15 +5,18 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution {
-    int solve(int capacity, vector<int> &val, vector<int> &wt,int i){
-        if(i==val.size()){
+    int solve(int capacity, vector<int> &val, vector<int> &wt,int i,vector<vector<int>>&dp){
+        if(i<0 || capacity<=0){
             return 0;
+        }
+        if(dp[i][capacity]!=-1){
+            return dp[i][capacity];
         }
         int include=INT_MIN;
         if(capacity-wt[i]>=0){
-         include=val[i]+solve(capacity-wt[i],val,wt,i+1);}
-        int  not_include=solve(capacity,val,wt,i+1);
-        return max(include,not_include);
+         include=val[i]+solve(capacity-wt[i],val,wt,i-1,dp);}
+        int  not_include=solve(capacity,val,wt,i-1,dp);
+        return dp[i][capacity]= max(include,not_include);
         
     }
     
@@ -21,7 +24,9 @@ class Solution {
     // Function to return max value that can be put in knapsack of capacity.
     int knapSack(int capacity, vector<int> &val, vector<int> &wt) {
         // code here
-        return solve(capacity,val,wt,0);
+        int n=val.size();
+        vector<vector<int>>dp(n,vector<int>(capacity+1,-1));
+        return solve(capacity,val,wt,n-1,dp);
     }
 };
 

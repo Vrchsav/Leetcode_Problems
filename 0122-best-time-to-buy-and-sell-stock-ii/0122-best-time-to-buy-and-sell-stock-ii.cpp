@@ -1,32 +1,32 @@
 class Solution {
-    int solve(vector<int>& prices, int i, bool flag,vector<vector<int>>&dp) {
+    int solve(vector<int>& prices) {
+        int n = prices.size();
 
-        if (i >=prices.size()) {
-            return 0;
-        }
-        
-        if(dp[i][int(flag)]!=-1){
-            return dp[i][int(flag)];
-        }
-        if (flag == true) {
-            int buy = -prices[i] + solve(prices, i + 1, false,dp);
+        vector<vector<int>> dp(n + 1, vector<int>(2, 0));
+        dp[n][0] = 0;
+        dp[n][1] = 0;
 
-            int do_nothing = solve(prices, i + 1, true,dp);
-            return  dp[i][int(flag)]=max(do_nothing, buy);
-        }
- 
-        else {
-            int sell = prices[i] + solve(prices, i + 1, true,dp);
-            int do_nothing = solve(prices, i + 1, false,dp);
-            return dp[i][int(flag)]=  max(do_nothing, sell);
-        }
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = 0; j <= 1; j++) {
+                if (j) {
+                    int buy = -prices[i] + dp[i+1][0];
+                    int do_nothing =  dp[i+1][1];
+                    dp[i][j] = max(do_nothing, buy);
+                }
 
+                else {
+                    int sell = prices[i] +dp[i+1][1];
+                    int do_nothing = dp[i+1][0];
+                     dp[i][j] = max(do_nothing, sell);
+                }
+            }
+        }
+        return dp[0][1];
     }
 
 public:
     int maxProfit(vector<int>& prices) {
-        int n = prices.size();
-        vector<vector<int>>dp(n+1,vector<int>(2,-1));
-        return solve(prices, 0, true,dp);
+        
+        return solve(prices);
     }
 };

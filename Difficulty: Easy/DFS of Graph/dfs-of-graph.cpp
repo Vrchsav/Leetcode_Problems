@@ -6,28 +6,31 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
+   void dfsg(vector<vector<int>>& adj,vector<int>&ans,vector<int>&visited,int i){
+       
+       visited[i]=1;
+       ans.push_back(i);
+       for(int j=0;j<adj[i].size();j++){
+           if(visited[adj[i][j]]==0 ){
+               
+               
+               dfsg(adj,ans,visited,adj[i][j]);
+           }
+       }
+       
+   }
     // Function to return a list containing the DFS traversal of the graph.
     vector<int> dfsOfGraph(vector<vector<int>>& adj) {
-        unordered_map<int,bool>mpp;
-        stack<int>stt;
-        stt.push(0);
-        vector<int>ans;
-        while(!stt.empty()){
-            int front=stt.top();
-            stt.pop();
-            if (!mpp[front]) {
-                mpp[front] = true;
-                ans.push_back(front);}
-            for(int i=adj[front].size()-1;i>=0;i--){
-                int a=adj[front][i];
-                if(!mpp[a]){
-                    stt.push(a);
-                }
-            }
-            
-        }
-        return ans;
         // Code here
+        int n=adj.size();
+        vector<int>visited(n,0);
+        vector<int>ans;
+        dfsg(adj,ans,visited,0);
+        
+        
+        
+        return ans;
+        
     }
 };
 

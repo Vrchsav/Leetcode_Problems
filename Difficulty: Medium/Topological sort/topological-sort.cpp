@@ -6,29 +6,36 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-    void dfs(stack<int>&stt,vector<int>&visited,int src,vector<vector<int>>& adj){
-        visited[src]=1;
-        for(auto a: adj[src]){
-            if(!visited[a]){
-                dfs(stt,visited,a,adj);
-            }
-        }
-        stt.push(src);
-    }
     // Function to return list containing vertices in Topological order.
     vector<int> topologicalSort(vector<vector<int>>& adj) {
-        stack<int>stt;
-        vector<int>visited(adj.size(),0);
-        
-        for(int i=0;i<adj.size();i++){
-            if(!visited[i]){
-                dfs(stt,visited,i,adj);
+        int n=adj.size();
+        vector<int>indegree(n,0);
+        for(int i=0;i<n;i++){
+            for(int j=0;j<adj[i].size();j++){
+                int num=adj[i][j];
+                indegree[num]++;
             }
         }
+        
+        
+        queue<int>q;
         vector<int>ans;
-        while(!stt.empty()){
-            ans.push_back(stt.top());
-            stt.pop();
+        for(int i=0;i<n;i++){
+            if(indegree[i]==0){
+                q.push(i);
+            }
+        }
+        
+        while(!q.empty()){
+            int top=q.front();
+            q.pop();
+            ans.push_back(top);
+            for(auto it:adj[top]){
+                indegree[it]--;
+                if( indegree[it]==0){
+                    q.push(it);
+                }
+            }
         }
         return ans;
         // Your code here

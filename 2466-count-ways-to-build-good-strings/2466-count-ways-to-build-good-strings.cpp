@@ -1,5 +1,7 @@
 class Solution {
     void solve(int &low, int &high, int &zero, int &one, int len, int &ans, vector<int> &dp) {
+    const int MOD = 1e9 + 7;
+
     // Base Case: Stop if length exceeds high
     if (len > high) {
         return;
@@ -7,7 +9,7 @@ class Solution {
 
     // Memoization Check
     if (dp[len] != -1) {
-        ans += dp[len];
+        ans = (ans + dp[len]) % MOD;
         return;
     }
 
@@ -23,10 +25,11 @@ class Solution {
     solve(low, high, zero, one, len + zero, currentCount, dp);
     solve(low, high, zero, one, len + one, currentCount, dp);
 
-    // Update memoization and answer
-    dp[len] = currentCount;
-    ans += currentCount;
+    // Update memoization and answer, ensuring modulo is applied
+    dp[len] = currentCount % MOD;
+    ans = (ans + currentCount) % MOD;
 }
+
 
 public:
     int countGoodStrings(int low, int high, int zero, int one) {

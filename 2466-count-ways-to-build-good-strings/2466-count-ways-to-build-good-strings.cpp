@@ -16,7 +16,6 @@ class Solution {
     // Initialize count for current length
     int currentCount = 0;
 
-    // Count valid strings for the current length
     if (len >= low && len <= high) {
         currentCount++;
     }

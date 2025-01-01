@@ -1,53 +1,38 @@
 class Solution {
-private:
-    int solve (int n, vector<int> days, vector<int> cost,int i,int validity){
-    
-    if(i>=n){
-        return 0;
-    }
-    while(validity>days[i]){
-        i++;
-    if(i==n){
-        return 0;
-    }    
-    }
-    int a=cost[0]+solve(n, days, cost, i+1, days[i]+1);
-    int b=cost[1]+solve(n, days, cost, i+1, days[i]+7);
-    int c=cost[2]+solve(n, days, cost, i+1, days[i]+30);
-    return(min(a,min(b,c)));
+    int solve(vector<int>& days, vector<int>& costs) {
+        int n = days.size();
+        vector<int> dp(n + 1, 0); // dp[i] represents the minimum cost to cover all days starting from day i
+        
+        // Iterate from the last day to the first
+        for (int i = n - 1; i >= 0; i--) {
+            // Option 1: Buy a 1-day pass
+            int day1Cost = costs[0] + dp[i + 1];
 
-}
+            // Option 2: Buy a 7-day pass
+            int j = i;
+            while (j < n && days[j] < days[i] + 7) {
+                j++;
+            }
+            int day7Cost = costs[1] + dp[j];
 
+            // Option 3: Buy a 30-day pass
+            int k = i;
+            while (k < n && days[k] < days[i] + 30) {
+                k++;
+            }
+            int day30Cost = costs[2] + dp[k];
 
-int solve_meme(int n, vector<int> days, vector<int> cost,int i,int validity, vector<int> &dp){
-    
-    if(i>=n){
-        return 0;
-    }
-    while(validity>days[i]){
-        i++;
-        if (i == n) {
-        return 0;
+            // Take the minimum of all three options
+            dp[i] = min(day1Cost, min(day7Cost, day30Cost));
         }
-    }
-    if(dp[i]!=-1){
-        return dp[i];
-    }
-    
-    int a=cost[0]+solve_meme(n, days, cost, i+1, days[i]+1,dp);
-    int b=cost[1]+solve_meme(n, days, cost, i+1, days[i]+7,dp);
-    int c=cost[2]+solve_meme(n, days, cost, i+1, days[i]+30,dp);
-    dp[i]=min(a,min(b,c));
-    return(dp[i]);
 
-}
+        // The answer is the minimum cost to cover all days starting from the first
+        return dp[0];
+    }
 public:
     int mincostTickets(vector<int>& days, vector<int>& costs) {
-        int n=days.size();
-        vector<int>dp(n+1,-1);
-        int ans=solve_meme(n,days,costs,0,-1,dp);
-        //int ans=solve(n,days,costs,0,-1);
+        int ans=0;
+        ans=solve(days,costs);
         return ans;
-        
     }
 };

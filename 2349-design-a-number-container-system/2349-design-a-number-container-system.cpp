@@ -1,6 +1,6 @@
 class NumberContainers {
-    map<int,int>indexx;
-    map<int,set<int>>numberr;
+    unordered_map<int,int>indexx;
+    unordered_map<int,set<int>>numberr;
 
 public:
     NumberContainers() {

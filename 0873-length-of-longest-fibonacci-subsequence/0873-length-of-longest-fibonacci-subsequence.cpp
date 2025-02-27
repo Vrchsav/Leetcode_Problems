@@ -32,21 +32,22 @@ public:
         for (int i = 0; i < arr.size(); i++) {
             mpp[arr[i]] = i;
         }
-
+        int n=arr.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+1,2));
         int ans=0;
         for(int i=1;i<arr.size();i++){
             for(int j=i+1;j<arr.size();j++){
-                int t=solve(j,i,arr,mpp);
-                if(t>=3)
-                ans=max(ans,t);
+                int t=arr[j]-arr[i];
+                if(mpp.find(t)!=mpp.end() && mpp[t]<i){
+                    dp[i][j]=1+dp[mpp[t]][i];
+                
+                
+                }
+                ans=max(ans,dp[i][j]);
             }
+        
         }
-
-
-
-
-
-
-        return ans ;
+        if(ans<3) return 0;
+        return ans;
     }
 };

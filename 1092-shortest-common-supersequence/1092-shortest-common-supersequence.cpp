@@ -36,6 +36,8 @@ public:
             ans += text2[n2-1];
             n2--;
         }
+            reverse(ans.begin(), ans.end());
+
         return ans;
     }
 };

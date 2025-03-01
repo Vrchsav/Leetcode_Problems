@@ -1,31 +1,36 @@
 class Solution {
-    int solve(string text1, string text2, int n1, int n2) {
-        // Initialize the DP table with zeros
-        vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
-
-        // Fill the DP table
-        for (int i = 1; i <= n1; i++) {
-            for (int j = 1; j <= n2; j++) {
-                // Check if characters match
-                if (text1[i - 1] == text2[j - 1]) {
-                    dp[i][j] =
-                        1 + dp[i - 1][j - 1]; // Include the matching character
-                } else {
-                    // Take the maximum from ignoring either character
-                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
-                }
+    int solve(string text1,string text2,int idx1,int idx2,vector<vector<int>>&dp){
+        // if(idx1==0 && idx2==0){
+        //     if(text1[idx1]==text2[idx2]){
+        //         return 1;
+        //     }
+        //     else return 0;
+        // }
+        if(idx1<0 || idx2<0){
+            return 0;
             }
+        if(dp[idx1][idx2]!=-1){
+            return dp[idx1][idx2];
         }
+        int a=0;
+        if(text1[idx1]==text2[idx2]){
+            a=1+solve(text1,text2,idx1-1,idx2-1,dp);
+        }
+        int b=max(solve(text1,text2,idx1,idx2-1,dp),solve(text1,text2,idx1-1,idx2,dp));
 
-        // The result is in dp[n1][n2], the last cell of the DP table
-        return dp[n1][n2];
+        return dp[idx1][idx2]=max(a,b);
+
     }
-
 public:
     int longestCommonSubsequence(string text1, string text2) {
+        int idx1=text1.size()-1;
+        int idx2=text2.size()-1;   
+        vector<vector<int>>dp(idx1+1,vector<int>(idx2+1,-1));
 
-        int n1 = text1.size();
-        int n2 = text2.size();
-        return solve(text1, text2, n1, n2);
+        int ans=solve(text1,text2,idx1,idx2,dp);
+
+        return ans;
+
+        
     }
 };

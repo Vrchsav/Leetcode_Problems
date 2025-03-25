@@ -1,37 +1,36 @@
+#include <vector>
+#include <algorithm>
+
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        vector<vector<int>>ans;
-        vector<vector<int>>vcc;
-        for(auto &a:intervals){
-            vcc.push_back({a[0],1});
-            vcc.push_back({a[1],-1});
+        // Ensure intervals are sorted by start time for efficient merging
+        sort(intervals.begin(), intervals.end());
 
-        }
-        sort(vcc.begin(), vcc.end(), [](vector<int> &a, vector<int> &b) {
-    if (a[0] == b[0]) {
-        return a[1] > b[1]; // Sort by second element in descending order if first elements are equal
-    }
-    return a[0] < b[0]; 
-});
+        vector<vector<int>> result;
+        int start = intervals[0][0];
+        int end = intervals[0][1];
 
-        int start=-1;
-        int end=-1;
-        int total=0;
-        for(auto &a:vcc){
-            if(total==0 ){
-                start=a[0];
-                total+=a[1];
-            }else{
-                total+=a[1];
-                if(total==0){
-                    end=a[0];
-                    ans.push_back({start,end});
-                }
+        // Iterate through intervals, considering both start and end times for merging
+        for (int i = 1; i < intervals.size(); i++) {
+            int currentStart = intervals[i][0];
+            int currentEnd = intervals[i][1];
+
+            // Check for overlap or consecutive intervals
+            if (currentStart <= end) {
+                // Update end time to include the larger ending interval
+                end = std::max(end, currentEnd);
+            } else {
+                // No overlap, push the current merged interval and start processing the new one
+                result.push_back({start, end});
+                start = currentStart;
+                end = currentEnd;
             }
-
         }
-        return ans;
 
+        // Push the last merged interval if applicable
+        result.push_back({start, end});
+
+        return result;
     }
 };
